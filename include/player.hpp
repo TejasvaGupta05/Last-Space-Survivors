@@ -24,9 +24,9 @@ class Player{
         float nitroAccelMultiplier = 2.f;
         float baseAcceleration = 28.f;
         int shootCooldown = 0;
-        float nitroCapacity = 120.f;
+        float nitroCapacity = 160.f;
         float nitroCharge = nitroCapacity;
-        float nitroDrainRate = 45.f;
+        float nitroDrainRate = 40.f;
         float nitroRechargeRate = 22.f;
         bool nitroActive = false;
         

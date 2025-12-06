@@ -182,6 +182,31 @@ int main()
     float difficulty = 1.f;
     float difficultyTimeOffset = 0.f;
 
+    auto startNewGame = [&]() {
+        player = std::make_unique<Player>(Game.center.x, Game.center.y);
+        enemies.clear();
+        lasers.clear();
+        orbs.clear();
+        coins.clear();
+        shockwaveRipples.clear();
+        particleSystem->particles.clear();
+        floatingTexts.clear();
+        
+        totalCoins = 0;
+        difficultyClock.restart();
+        difficulty = 1.f;
+        difficultyTimeOffset = 0.f;
+        
+        // Initial enemies
+        for (std::size_t i = 0; i < baseEnemyCount; ++i)
+        {
+            enemies.emplace_back(Game);
+            enemies.back().applyDifficulty(difficulty);
+        }
+
+        currentState = GameState::GAME;
+    };
+
     while (Game.window.isOpen())
     {
         bool isLaserHitting = false;
@@ -209,8 +234,7 @@ int main()
                 if (const auto* keyEvent = event->getIf<sf::Event::KeyPressed>()) {
                     int selection = titleScreen->handleInput(keyEvent->code);
                     if (selection == 0) { // Play
-                        currentState = GameState::GAME;
-                        difficultyClock.restart(); // Reset difficulty timer
+                        startNewGame();
                     } else if (selection == 3) { // Exit
                         Game.window.close();
                     }
@@ -222,8 +246,7 @@ int main()
                         sf::Vector2f mouseUI = Game.window.mapPixelToCoords(mousePress->position, Game.uiView);
                         int selection = titleScreen->handleClick(mouseUI);
                         if (selection == 0) { // Play
-                            currentState = GameState::GAME;
-                            difficultyClock.restart();
+                            startNewGame();
                         } else if (selection == 3) { // Exit
                             Game.window.close();
                         }
@@ -359,28 +382,7 @@ int main()
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::R)) {
                 // Restart Game
-                player = std::make_unique<Player>(Game.center.x, Game.center.y);
-                enemies.clear();
-                lasers.clear();
-                orbs.clear();
-                coins.clear();
-                shockwaveRipples.clear();
-                particleSystem->particles.clear();
-                floatingTexts.clear();
-                
-                totalCoins = 0;
-                difficultyClock.restart();
-                difficulty = 1.f;
-                difficultyTimeOffset = 0.f;
-                
-                // Initial enemies
-                for (std::size_t i = 0; i < baseEnemyCount; ++i)
-                {
-                    enemies.emplace_back(Game);
-                    enemies.back().applyDifficulty(difficulty);
-                }
-
-                currentState = GameState::GAME;
+                startNewGame();
             } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Escape)) {
                 currentState = GameState::TITLE;
             }

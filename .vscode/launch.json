@@ -5,7 +5,7 @@
       "name": "Debug SFML App",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/app.exe",
+      "program": "${workspaceFolder}/LSS.exe",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
