@@ -1,0 +1,61 @@
+src\HUD.cpp: In constructor 'HUD::HUD(const sf::Font&, const sf::Vector2f&)':
+src\HUD.cpp:8:40: error: no matching function for call to 'sf::Text::Text()'
+    8 |     : font(font), windowSize(windowSize)
+      |                                        ^
+In file included from C:\Tools\SFML-3.0.2\include/SFML/Graphics.hpp:50,
+                 from include/HUD.hpp:4,
+                 from src\HUD.cpp:1:
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Text.hpp:87:5: note: candidate: 'sf::Text::Text(const sf::Font&, sf::String, unsigned int)'
+   87 |     Text(const Font& font, String string = "", unsigned int characterSize = 30);
+      |     ^~~~
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Text.hpp:87:5: note:   candidate expects 3 arguments, 0 provided
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Text.hpp:56:25: note: candidate: 'constexpr sf::Text::Text(const sf::Text&)'
+   56 | class SFML_GRAPHICS_API Text : public Drawable, public Transformable
+      |                         ^~~~
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Text.hpp:56:25: note:   candidate expects 1 argument, 0 provided
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Text.hpp:56:25: note: candidate: 'constexpr sf::Text::Text(sf::Text&&)'
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Text.hpp:56:25: note:   candidate expects 1 argument, 0 provided
+src\HUD.cpp:8:40: error: no matching function for call to 'sf::Sprite::Sprite()'
+    8 |     : font(font), windowSize(windowSize)
+      |                                        ^
+In file included from C:\Tools\SFML-3.0.2\include/SFML/Graphics.hpp:48:
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Sprite.hpp:78:5: note: candidate: 'sf::Sprite::Sprite(const sf::Texture&, const sf::IntRect&)'
+   78 |     Sprite(const Texture& texture, const IntRect& rectangle);
+      |     ^~~~~~
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Sprite.hpp:78:5: note:   candidate expects 2 arguments, 0 provided
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Sprite.hpp:61:14: note: candidate: 'sf::Sprite::Sprite(const sf::Texture&)'
+   61 |     explicit Sprite(const Texture& texture);
+      |              ^~~~~~
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Sprite.hpp:61:14: note:   candidate expects 1 argument, 0 provided
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Sprite.hpp:50:25: note: candidate: 'constexpr sf::Sprite::Sprite(const sf::Sprite&)'
+   50 | class SFML_GRAPHICS_API Sprite : public Drawable, public Transformable
+      |                         ^~~~~~
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Sprite.hpp:50:25: note:   candidate expects 1 argument, 0 provided
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Sprite.hpp:50:25: note: candidate: 'constexpr sf::Sprite::Sprite(sf::Sprite&&)'
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Sprite.hpp:50:25: note:   candidate expects 1 argument, 0 provided
+src\HUD.cpp:55:36: error: 'using sf::FloatRect = class sf::Rect<float>' {aka 'class sf::Rect<float>'} has no member named 'width'
+   55 |         sf::Vector2f origin(bounds.width / 2.f, bounds.height / 2.f);
+      |                                    ^~~~~
+src\HUD.cpp:55:56: error: 'using sf::FloatRect = class sf::Rect<float>' {aka 'class sf::Rect<float>'} has no member named 'height'
+   55 |         sf::Vector2f origin(bounds.width / 2.f, bounds.height / 2.f);
+      |                                                        ^~~~~~
+src\HUD.cpp: In member function 'void HUD::update(const Player&, int, float)':
+src\HUD.cpp:132:40: error: 'using sf::FloatRect = class sf::Rect<float>' {aka 'class sf::Rect<float>'} has no member named 'width'
+  132 |     sf::Vector2f textOrigin(textBounds.width, textBounds.height / 2.f);
+      |                                        ^~~~~
+src\HUD.cpp:132:58: error: 'using sf::FloatRect = class sf::Rect<float>' {aka 'class sf::Rect<float>'} has no member named 'height'
+  132 |     sf::Vector2f textOrigin(textBounds.width, textBounds.height / 2.f);
+      |                                                          ^~~~~~
+src\main.cpp: In function 'int main()':
+src\main.cpp:359:32: error: no matching function for call to 'sf::RectangleShape::setPosition(int, int)'
+  359 |             overlay.setPosition(0,0);
+      |             ~~~~~~~~~~~~~~~~~~~^~~~~
+In file included from C:\Tools\SFML-3.0.2\include/SFML/Graphics/Shape.hpp:37,
+                 from C:\Tools\SFML-3.0.2\include/SFML/Graphics/CircleShape.hpp:32,
+                 from C:\Tools\SFML-3.0.2\include/SFML/Graphics.hpp:32,
+                 from include/window.hpp:3,
+                 from src\main.cpp:2:
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Transformable.hpp:70:10: note: candidate: 'void sf::Transformable::setPosition(sf::Vector2f)'
+   70 |     void setPosition(Vector2f position);
+      |          ^~~~~~~~~~~
+C:\Tools\SFML-3.0.2\include/SFML/Graphics/Transformable.hpp:70:10: note:   candidate expects 1 argument, 2 provided
