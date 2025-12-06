@@ -13,7 +13,7 @@ class Background {
 public:
     Background(const std::string& resourcePath);
     void update(const sf::Vector2f& cameraPos, const sf::Vector2f& viewSize);
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window, sf::Vector2f playerVelocity = {0.f, 0.f});
 
 private:
     struct Chunk {
@@ -30,6 +30,7 @@ private:
     std::vector<Layer> layers;
     std::vector<sf::Texture> starTextures;
     std::vector<sf::Texture> planetTextures;
+    sf::Texture whiteTexture;
     unsigned int seed;
 
     void loadTextures(const std::string& resourcePath);

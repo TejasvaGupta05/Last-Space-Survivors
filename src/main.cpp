@@ -727,7 +727,7 @@ int main()
         Game.window.setView(Game.worldView);
         
         // Draw Background
-        background->draw(Game.window);
+        background->draw(Game.window, {player->velX, player->velY});
         
         // Draw Ripples (behind entities but above background)
         for (auto& ripple : shockwaveRipples) {

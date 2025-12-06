@@ -19,6 +19,16 @@ Background::Background(const std::string& resourcePath) {
 
     // Layer 2: Foreground (Planets) - Fastest (but still slower than camera)
     layers.push_back({0.2f, {}});
+
+    // Layer 3: Dust/Speed Particles - Moves with camera (Parallax 1.0 or near)
+    layers.push_back({0.8f, {}});
+    
+    // Create 1x1 white texture
+    sf::Image whiteImg;
+    whiteImg.resize({1, 1}, sf::Color::White);
+    if (!whiteTexture.loadFromImage(whiteImg)) {
+        // Fallback?
+    }
 }
 
 void Background::loadTextures(const std::string& resourcePath) {
@@ -153,6 +163,33 @@ void Background::generateChunk(int cx, int cy, int layerIndex) {
         }
     }
 
+    // --- Dust (Layer 3) ---
+    if (layerIndex == 3) {
+        std::uniform_int_distribution<int> dustCountDist(8, 12);
+        int dustCount = dustCountDist(rng);
+        
+        for (int i = 0; i < dustCount; i++) {
+            sf::Sprite dust(whiteTexture);
+            
+            float lx = static_cast<float>(posDist(rng));
+            float ly = static_cast<float>(posDist(rng));
+            float wx = cx * chunkSize + lx;
+            float wy = cy * chunkSize + ly;
+
+            dust.setPosition({wx, wy});
+            dust.setOrigin({0.5f, 0.5f});
+            
+            // Random opacity
+            std::uniform_int_distribution<int> alphaDist(50, 150);
+            dust.setColor(sf::Color(255, 255, 255, alphaDist(rng)));
+            
+            // Tiny base scale
+            dust.setScale({2.f, 2.f}); // 2x2 pixel
+
+            chunk->sprites.push_back(dust);
+        }
+    }
+
     layers[layerIndex].chunks[{cx, cy}] = std::move(chunk);
 }
 
@@ -165,17 +202,50 @@ void Background::removeFarChunks(int cx, int cy, int radius, int layerIndex) {
     });
 }
 
-void Background::draw(sf::RenderWindow& window) {
+void Background::draw(sf::RenderWindow& window, sf::Vector2f playerVelocity) {
     sf::View originalView = window.getView();
     sf::Vector2f center = originalView.getCenter();
 
-    for (const auto& layer : layers) {
+    // Calculate trail effect parameters
+    sf::Vector2f dir = -playerVelocity; // Trail opposite to movement
+    float speedSq = dir.x*dir.x + dir.y*dir.y;
+    float speed = std::sqrt(speedSq);
+    
+    float stretchFactor = 1.f;
+    sf::Angle angle = sf::degrees(0.f);
+    
+    // Stretch logic
+    // Player speed is usually 0-12 pixels/frame
+    if (speed > 0.5f) {
+        stretchFactor = speed * 4.f; 
+        if (stretchFactor > 100.f) stretchFactor = 100.f; // Cap
+        angle = sf::degrees(std::atan2(dir.y, dir.x) * 180.f / 3.14159f);
+    }
+
+    for (int i = 0; i < layers.size(); ++i) {
         sf::View layerView = originalView;
-        layerView.setCenter(center * layer.parallaxFactor);
+        layerView.setCenter(center * layers[i].parallaxFactor);
         window.setView(layerView);
 
-        for (const auto& [key, chunk] : layer.chunks) {
-            for (const auto& sprite : chunk->sprites) {
+        for (const auto& [key, chunk] : layers[i].chunks) {
+            for (auto& sprite : chunk->sprites) { 
+                // Note: iterating by non-const reference to modify sprite for drawing (if we wanted to modify state persistently)
+                // But we shouldn't modify persistent state for temporary visual effect if we want them to return to dots.
+                // However, sprites are stateful. We must reset or modify them.
+                // Since this is immediate mode draw, we can modify -> draw -> reset, OR
+                // Just force the transform we want every frame.
+                
+                if (i == 3) { // Dust Layer
+                    // Apply trail effect
+                     if (speed > 0.5f) {
+                         sprite.setRotation(angle);
+                         sprite.setScale({2.f + stretchFactor, 2.f}); // Stretch X, keep Y thin
+                     } else {
+                         sprite.setRotation(sf::degrees(0.f));
+                         sprite.setScale({2.f, 2.f}); // Back to dot
+                     }
+                }
+                
                 window.draw(sprite);
             }
         }
