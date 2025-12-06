@@ -1,6 +1,6 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp> 
 #include <string>
 #include <algorithm>
 #include <vector>
@@ -14,11 +14,7 @@ class Window{
         sf::Vector2f center;
         sf::RenderWindow window;
         
-        sf::Font UiFont; // Keep Font as it might be used by HUD or others (actually HUD loads its own ref, but Main might need it or pass it)
-        // Actually HUD takes font by reference in constructor, Main loads it? 
-        // In current main.cpp, Main accesses Game.UiFont? Let's see main.cpp again.
-        // main.cpp doesn't fully load font, Window constructor loads it.
-        // We should keep UiFont here to share it.
+        sf::Font UiFont; 
 
         sf::View worldView;
         sf::View uiView;

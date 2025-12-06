@@ -12,7 +12,7 @@
                 "-I${workspaceFolder}\\include",
                 "-LC:\\Tools\\SFML-3.0.2\\lib",
                 "-o",
-                "app.exe",
+                "LSS.exe",
                 "-lsfml-graphics",
                 "-lsfml-window",
                 "-lsfml-system",
