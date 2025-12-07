@@ -84,6 +84,21 @@ public:
         }
     }
 
+    void emitCone(sf::Vector2f position, sf::Vector2f direction, float coneAngle, int count, sf::Color color, float speed = 100.f) {
+        float baseAngle = std::atan2(direction.y, direction.x);
+        float halfAngle = coneAngle / 2.f;
+        std::uniform_real_distribution<float> angleDist(baseAngle - halfAngle, baseAngle + halfAngle);
+        std::uniform_real_distribution<float> speedDist(speed * 0.8f, speed * 1.2f);
+        std::uniform_real_distribution<float> lifeDist(0.2f, 0.6f);
+
+        for (int i = 0; i < count; ++i) {
+            float angle = angleDist(rng);
+            float s = speedDist(rng);
+            sf::Vector2f vel = {std::cos(angle) * s, std::sin(angle) * s};
+            particles.push_back({position, vel, lifeDist(rng), lifeDist(rng), color});
+        }
+    }
+
     void update(float dt) {
         for (auto& p : particles) {
             p.lifetime -= dt;

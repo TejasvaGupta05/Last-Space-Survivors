@@ -449,6 +449,23 @@ int main()
                 player->accX = -(0.05f * player->velX) + thrust;
         }
         
+        // Particle Emission for Movement
+        float speedSq = player->velX * player->velX + player->velY * player->velY;
+        if (speedSq > 100.f) { // Only emit if moving
+            sf::Vector2f velocity(player->velX, player->velY);
+            sf::Vector2f direction = -velocity; // Opposite to movement
+            float len = std::sqrt(direction.x*direction.x + direction.y*direction.y);
+            if (len > 0.001f) direction /= len;
+            
+            // Randomize position slightly for trail thickness
+            sf::Vector2f pos = player->body.getPosition();
+            pos.x += std::uniform_real_distribution<float>(-10.f, 10.f)(rng);
+            pos.y += std::uniform_real_distribution<float>(-10.f, 10.f)(rng);
+
+            // Cone emission
+            particleSystem->emitCone(pos, direction, 0.5f, 1, sf::Color::White, 100.f); 
+        }
+        
         player->updateTexture(isMoving);
         player->updateLaserEnergy(dt);
 

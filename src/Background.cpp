@@ -217,8 +217,8 @@ void Background::draw(sf::RenderWindow& window, sf::Vector2f playerVelocity) {
     // Stretch logic
     // Player speed is usually 0-12 pixels/frame
     if (speed > 0.5f) {
-        stretchFactor = speed * 4.f; 
-        if (stretchFactor > 100.f) stretchFactor = 100.f; // Cap
+        stretchFactor = speed * 1.5f; 
+        if (stretchFactor > 20.f) stretchFactor = 20.f; // Cap
         angle = sf::degrees(std::atan2(dir.y, dir.x) * 180.f / 3.14159f);
     }
 

@@ -72,7 +72,7 @@ HUD::HUD(const sf::Font& font, const sf::Vector2f& windowSize)
 
     if (!coinTextures.empty()) {
         coinSprite.emplace(coinTextures[0]);
-        sf::Vector2f scale(0.8f, 0.8f);
+        sf::Vector2f scale(1.2f, 1.2f);
         coinSprite->setScale(scale);
         
         sf::FloatRect bounds = coinSprite->getLocalBounds();
@@ -80,7 +80,7 @@ HUD::HUD(const sf::Font& font, const sf::Vector2f& windowSize)
         coinSprite->setOrigin(origin);
     }
 
-    coinText.setCharacterSize(24);
+    coinText.setCharacterSize(32);
     coinText.setFillColor(sf::Color::White);
     coinText.setOutlineColor(sf::Color::Black);
     coinText.setOutlineThickness(1.f);
@@ -161,7 +161,7 @@ void HUD::update(const Player& player, int coins, float dt) {
     
     if(coinSprite) {
         sf::Vector2f iconPos = coinSprite->getPosition();
-        sf::Vector2f textPos(iconPos.x - 25.f, iconPos.y - 5.f);
+        sf::Vector2f textPos(iconPos.x - 35.f, iconPos.y - 5.f);
         coinText.setPosition(textPos); 
     }
 }
